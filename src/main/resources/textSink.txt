@@ -1,0 +1,4 @@
+(hbase,3)
+(hive,1)
+(java,3)
+(spark,2)
