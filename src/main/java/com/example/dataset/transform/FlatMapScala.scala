@@ -9,19 +9,13 @@ object FlatMapScala {
     val dataSource = evn.fromElements(
       "spark hbase java",
       "java spark hive",
-      "java hbase hbase"
-    )
+      "java hbase hbase")
       .map(line => line.toUpperCase)
       .flatMap((line: String, collecotr: Collector[(String, Int)]) => {
-
-        (line.split(" ")).foreach(word => collecotr.collect(word, 1))
-        //              for(word <- line.split(" ")){
-        //                collecotr.collect(word ,1 )
-        //              }
+        line.split(" ").foreach(word => collecotr.collect(word, 1))
       })
-      //      .flatMap(line => line.split(" "))
-      //      .map(word => (word , 1))
-      .print()
+
+    dataSource.print()
 
   }
 }

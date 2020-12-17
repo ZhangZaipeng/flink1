@@ -27,7 +27,8 @@ public class MySQLSinkJava {
           for (String word : line.split(" ")) {
             collector.collect(new Tuple2<>(word, 1));
           }
-        }).returns(Types.TUPLE(Types.STRING, Types.INT))
+        })
+        .returns(Types.TUPLE(Types.STRING, Types.INT))
         .groupBy("f0")
         .reduce((x, y) -> (new Tuple2<>(x.f0, x.f1 + y.f1)))
         .map(x -> Row.of(x.f0, x.f1));

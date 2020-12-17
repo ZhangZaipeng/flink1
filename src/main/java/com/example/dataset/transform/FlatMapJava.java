@@ -13,29 +13,22 @@ public class FlatMapJava {
 
   public static void main(String[] args) throws Exception {
 
-    ExecutionEnvironment env =
-        ExecutionEnvironment.getExecutionEnvironment();
+    ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
     env.setParallelism(2);
+
     DataSet<String> dataSource = env.fromElements(
         "spark hbase java",
         "java spark hive",
         "java hbase hbase"
     );
+
     DataSet<String> mapSource = dataSource.map(new MapFunction<String, String>() {
       @Override
       public String map(String line) throws Exception {
         return line.toUpperCase();
       }
     });
-//        DataSet<Tuple2<String,Integer>> result = mapSource.flatMap(new FlatMapFunction<String, Tuple2<String, Integer>>() {
-//            @Override
-//            public void flatMap(String line, Collector<Tuple2<String, Integer>> collector) throws Exception {
-//                for (String word : line.split(" ")){
-//                    collector.collect(new Tuple2<>(word , 1));
-//                }
-//            }
-//        });
 
     DataSet<Tuple2<String, Integer>> result = mapSource.flatMap((String line,
         Collector<Tuple2<String, Integer>> collector) -> {

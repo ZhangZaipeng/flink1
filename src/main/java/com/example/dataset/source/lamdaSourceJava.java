@@ -11,23 +11,21 @@ import org.apache.flink.util.Collector;
 public class lamdaSourceJava {
 
   public static void main(String[] args) throws Exception {
-    ExecutionEnvironment env =
-        ExecutionEnvironment.getExecutionEnvironment();
-    DataSource<String> source = env.readTextFile(
-        "/Users/caojinbo/Documents/workspace/aikfk_flink/src/main/resources/wordcount");
+    ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-    DataSet<Tuple2<String, Integer>> dataSet =
-        source.flatMap((String line, Collector<Tuple2<String, Integer>> collector) -> {
+    DataSource<String> source = env.readTextFile("wordcount");
+
+    DataSet<Tuple2<String, Integer>> dataSet = source
+        .flatMap((String line, Collector<Tuple2<String, Integer>> collector) -> {
           String[] words = line.split(" ");
           for (String word : words) {
-            collector.collect((new Tuple2<>(word, 1)));
+            collector.collect(new Tuple2<>(word, 1));
           }
         })
-            .returns(Types.TUPLE(Types.STRING, Types.INT))
-            .groupBy("f0")
-            .reduce((t1, t2) -> new Tuple2<>(t1.f0, t1.f1 + t2.f1));
+        .returns(Types.TUPLE(Types.STRING, Types.INT))
+        .groupBy("f0")
+        .reduce((t1, t2) -> new Tuple2<>(t1.f0, t1.f1 + t2.f1));
 
     dataSet.print();
-
   }
 }

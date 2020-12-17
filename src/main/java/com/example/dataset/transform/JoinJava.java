@@ -11,16 +11,14 @@ public class JoinJava {
 
   public static void main(String[] args) throws Exception {
 
-    ExecutionEnvironment env =
-        ExecutionEnvironment.getExecutionEnvironment();
+    ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-    DataSet<Tuple2<String, String>> dept_source = env.readCsvFile(
-        "/Users/caojinbo/Documents/workspace/aikfk_flink/src/main/resources/dept.csv")
-        .types(String.class, String.class);
+    DataSet<Tuple2<String, String>> dept_source =
+        env.readCsvFile("dept.csv").types(String.class, String.class);
 
-    DataSet<EmploeePOJO> employee_source = env.readCsvFile(
-        "/Users/caojinbo/Documents/workspace/aikfk_flink/src/main/resources/employee.csv")
-        .pojoType(EmploeePOJO.class, "dept_id", "emp_name", "emp_price");
+    DataSet<EmploeePOJO> employee_source =
+        env.readCsvFile("employee.csv")
+            .pojoType(EmploeePOJO.class, "dept_id", "emp_name", "emp_price");
 
     DataSet<Tuple3<String, String, Integer>> result =
         dept_source.join(employee_source).where("f0").equalTo("dept_id")

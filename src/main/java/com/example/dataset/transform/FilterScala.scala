@@ -6,6 +6,7 @@ import org.apache.flink.util.Collector
 object FilterScala {
   def main(args: Array[String]): Unit = {
     val evn = ExecutionEnvironment.getExecutionEnvironment;
+
     val dataSource = evn.fromElements(
       "spark hbase java",
       "java spark hive",
@@ -16,6 +17,7 @@ object FilterScala {
         (line.split(" ")).foreach(word => collecotr.collect(word, 1))
       })
       .filter(tupe2 => (tupe2._1.equals("spark")))
-      .print()
+
+    dataSource.print()
   }
 }

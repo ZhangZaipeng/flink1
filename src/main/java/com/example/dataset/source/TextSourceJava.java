@@ -12,10 +12,9 @@ import org.apache.flink.util.Collector;
 public class TextSourceJava {
 
   public static void main(String[] args) throws Exception {
-    ExecutionEnvironment env =
-        ExecutionEnvironment.getExecutionEnvironment();
-    DataSource<String> source = env.readTextFile(
-        "/Users/caojinbo/Documents/workspace/aikfk_flink/src/main/resources/wordcount");
+    ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+
+    DataSource<String> source = env.readTextFile("wordcount");
 
     DataSet<Tuple2<String, Integer>> dataSet =
         source.flatMap(new FlatMapFunction<String, Tuple2<String, Integer>>() {
@@ -26,7 +25,6 @@ public class TextSourceJava {
             for (String word : words) {
               collector.collect(new Tuple2<String, Integer>(word, 1));
             }
-
           }
         })
             .groupBy("f0")

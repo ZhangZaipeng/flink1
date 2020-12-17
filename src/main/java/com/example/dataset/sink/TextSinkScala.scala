@@ -14,18 +14,15 @@ object TextSinkScala {
     val dataSource = env.fromElements(
       "spark hbase java",
       "java spark hive",
-      "java hbase hbase"
-    )
-      .flatMap((line : String , collecotr :Collector[(String,Int)]) =>{
-
-        (line.split(" ")).foreach(word => collecotr.collect(word , 1))
+      "java hbase hbase")
+      .flatMap((line: String, collecotr: Collector[(String, Int)]) => {
+        line.split(" ").foreach(word => collecotr.collect(word, 1))
       })
-
       .groupBy("_1")
-        .reduceGroup(x => x reduce((x , y) => (x._1,x._2 + y._2)))
-      .writeAsText("/Users/caojinbo/Documents/workspace/aikfk_flink/src/main/resources//textSink.txt",WriteMode.NO_OVERWRITE);
+      .reduceGroup(x => x reduce ((x, y) => (x._1, x._2 + y._2)))
+      .writeAsText("textSink.txt", WriteMode.NO_OVERWRITE);
 
-    env.execute() ;
+    env.execute();
 
 
   }

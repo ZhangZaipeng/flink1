@@ -13,29 +13,28 @@ import org.apache.flink.types.Row;
 public class MySQLSourceJava {
 
   public static void main(String[] args) throws Exception {
-    ExecutionEnvironment env =
-        ExecutionEnvironment.getExecutionEnvironment();
+    ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-    DataSet<Row> dbData =
-        env.createInput(
-            JDBCInputFormat.buildJDBCInputFormat()
-                .setDrivername("com.mysql.jdbc.Driver")
-                .setDBUrl("jdbc:mysql://bigdata-pro-m03.kfk.com/flink")
-                .setUsername("root")
-                .setPassword("123456")
-                .setQuery("select * from wordcount")
-                .setRowTypeInfo(
-                    new RowTypeInfo(BasicTypeInfo.STRING_TYPE_INFO, BasicTypeInfo.INT_TYPE_INFO))
-                .finish()
-        );
+    DataSet<Row> dbData = env.createInput(
+        JDBCInputFormat.buildJDBCInputFormat()
+            .setDrivername("com.mysql.jdbc.Driver")
+            .setDBUrl("jdbc:mysql://bigdata-pro-m03.kfk.com/flink")
+            .setUsername("root")
+            .setPassword("123456")
+            .setQuery("select * from wordcount")
+            .setRowTypeInfo(
+                new RowTypeInfo(BasicTypeInfo.STRING_TYPE_INFO, BasicTypeInfo.INT_TYPE_INFO))
+            .finish()
+    );
 
-    DataSet<WordCountPOJO> result = dbData.map(new MapFunction<Row, WordCountPOJO>() {
-      @Override
-      public WordCountPOJO map(Row row) throws Exception {
-        return new WordCountPOJO(String.valueOf(row.getField(0)),
-            (Integer) row.getField(1));
-      }
-    })
+    DataSet<WordCountPOJO> result = dbData
+        .map(new MapFunction<Row, WordCountPOJO>() {
+          @Override
+          public WordCountPOJO map(Row row) throws Exception {
+            return new WordCountPOJO(String.valueOf(row.getField(0)),
+                (Integer) row.getField(1));
+          }
+        })
         .groupBy("word")
         .reduce(new ReduceFunction<WordCountPOJO>() {
           @Override

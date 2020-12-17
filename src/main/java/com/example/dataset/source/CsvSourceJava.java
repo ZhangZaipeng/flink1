@@ -17,13 +17,11 @@ public class CsvSourceJava {
 //                .groupBy("word")
 //                .reduce((x,y) -> new WordCountPOJO(x.word,x.count + y.count));
 
-
-        DataSet<Tuple2<String,Integer>> dataSet = env.readCsvFile(
-                "/Users/caojinbo/Documents/workspace/aikfk_flink/src/main/resources/wordcount.csv")
+        DataSet<Tuple2<String,Integer>> dataSet = env.readCsvFile("wordcount.csv")
                 .includeFields("110")
                 .types(String.class,Integer.class)
                 .groupBy("f0")
-                .reduce((x,y) -> new Tuple2<String,Integer>(x.f0,x.f1 + y.f1));
+                .reduce((x, y) -> new Tuple2<String,Integer>(x.f0,x.f1 + y.f1));
 
         dataSet.print();
     }
