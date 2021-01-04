@@ -39,7 +39,5 @@ public class FlatMapJava {
 
     result.print();
 
-//        env.execute() ;
-
   }
 }

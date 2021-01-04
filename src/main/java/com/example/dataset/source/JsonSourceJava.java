@@ -12,7 +12,9 @@ public class JsonSourceJava {
   final static ObjectMapper objectMapper = new ObjectMapper();
 
   public static void main(String[] args) throws Exception {
+
     ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+
     DataSet<WordCountPOJO> dataSet = env.readTextFile("wordcount.json")
         .map(new MapFunction<String, WordCountPOJO>() {
           @Override

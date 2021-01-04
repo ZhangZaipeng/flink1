@@ -26,13 +26,12 @@ public class AggregateJava {
       for (String word : line.split(" ")) {
         collector.collect(new Tuple2<String, Integer>(word, 1));
       }
-    }).returns(Types.TUPLE(Types.STRING, Types.INT));
-
-//                .groupBy("f0")
-//                .reduce((x , y) -> new Tuple2<String,Integer>(x.f0,x.f1 + y.f1))
-//                .groupBy("f0")
-//                .aggregate(Aggregations.MIN , 1) ;
-//        .distinct("f0");
+    }).returns(Types.TUPLE(Types.STRING, Types.INT))
+        .groupBy("f0")
+        .reduce((x , y) -> new Tuple2<String,Integer>(x.f0,x.f1 + y.f1))
+         .groupBy("f0")
+         .aggregate(Aggregations.MIN , 1);
+        // .distinct("f0");
 
     result.print();
 

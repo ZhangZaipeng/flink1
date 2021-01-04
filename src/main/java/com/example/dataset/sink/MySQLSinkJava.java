@@ -33,6 +33,8 @@ public class MySQLSinkJava {
         .reduce((x, y) -> (new Tuple2<>(x.f0, x.f1 + y.f1)))
         .map(x -> Row.of(x.f0, x.f1));
 
+    dataSource.print();
+
     dataSource.output(
         JDBCOutputFormat.buildJDBCOutputFormat()
             .setDrivername("com.mysql.jdbc.Driver")
